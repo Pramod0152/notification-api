@@ -7,6 +7,7 @@ import { LoggerModule } from './app/common/logger/logger.module';
 import { ExceptionsFilterService } from './app/services/exception-filter.service';
 import { BullModule } from '@nestjs/bull';
 import { NotificationModule } from './modules/notification/notification.module';
+import { ResponseModule } from './app/common/response/response.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { NotificationModule } from './modules/notification/notification.module';
       url: 'redis://default:aNvCzgFbVbhcQNpXwRoMuHrLWOkwoeOO@redis-11011.c91.us-east-1-3.ec2.cloud.redislabs.com:11011',
     }),
     NotificationModule,
+    ResponseModule,
   ],
   controllers: [],
   providers: [
