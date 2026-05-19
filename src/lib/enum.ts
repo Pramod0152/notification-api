@@ -52,3 +52,8 @@ export enum NotificationStatus {
   SENT = 'sent',
   FAILED = 'failed',
 }
+
+export enum BullQueueName {
+  EMAIL = 'email',
+  SMS = 'sms',
+}

@@ -5,14 +5,33 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_FILTER } from '@nestjs/core';
 import { LoggerModule } from './app/common/logger/logger.module';
 import { ExceptionsFilterService } from './app/services/exception-filter.service';
-import { BullModule } from '@nestjs/bull';
+import { BullModule } from '@nestjs/bullmq';
 import { ResponseModule } from './app/common/response/response.module';
 import { DalModule } from './dal/dal.module';
 import { ServiceModule } from './bll/service.module';
 import { FrontendModule } from './modules/frontend.module';
+import { BullQueueModule } from './modules/bull-queue-module';
+import { NotificationProcessor } from './bll/notification.processor';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+    }),
+    BullModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        connection: {
+          host: configService.get<string>('REDIS_HOST'),
+          port: configService.get<number>('REDIS_PORT'),
+          username: configService.get<string>('REDIS_USERNAME'),
+          password: configService.get<string>('REDIS_PASSWORD'),
+        },
+      }),
+      inject: [ConfigService],
+    }),
+    BullQueueModule,
     ResponseModule,
     DalModule,
     ServiceModule,
@@ -20,15 +39,7 @@ import { FrontendModule } from './modules/frontend.module';
     SequelizeModule.forRootAsync({
       useClass: SequelizeConfigService,
     }),
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: '.env',
-    }),
     LoggerModule,
-    BullModule.registerQueue({
-      name: 'notification',
-      url: 'redis://default:aNvCzgFbVbhcQNpXwRoMuHrLWOkwoeOO@redis-11011.c91.us-east-1-3.ec2.cloud.redislabs.com:11011',
-    }),
   ],
   providers: [
     ConfigService,
@@ -36,6 +47,7 @@ import { FrontendModule } from './modules/frontend.module';
       provide: APP_FILTER,
       useClass: ExceptionsFilterService,
     },
+    NotificationProcessor,
   ],
 })
 export class AppModule {}
