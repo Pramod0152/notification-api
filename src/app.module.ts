@@ -11,7 +11,8 @@ import { DalModule } from './dal/dal.module';
 import { ServiceModule } from './bll/service.module';
 import { FrontendModule } from './modules/frontend.module';
 import { BullQueueModule } from './modules/bull-queue-module';
-import { NotificationProcessor } from './bll/notification.processor';
+import { EmailProcessor } from './bll/workers/email.processor';
+import { WorkerModule } from './bll/workers/worker.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { NotificationProcessor } from './bll/notification.processor';
     ResponseModule,
     DalModule,
     ServiceModule,
+    WorkerModule,
     FrontendModule,
     SequelizeModule.forRootAsync({
       useClass: SequelizeConfigService,
@@ -47,7 +49,7 @@ import { NotificationProcessor } from './bll/notification.processor';
       provide: APP_FILTER,
       useClass: ExceptionsFilterService,
     },
-    NotificationProcessor,
+    EmailProcessor,
   ],
 })
 export class AppModule {}

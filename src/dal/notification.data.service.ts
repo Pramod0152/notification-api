@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { NotificationLog } from './entities/notification.entity';
-import { CreateNotificationLogInput, UpdateNotificationLogInput } from '../bll/interfaces/notification-log.interface';
+import {
+  CreateNotificationLogInput,
+  UpdateNotificationLogInput,
+} from 'src/bll/interfaces/notification-log.interface';
 
 @Injectable()
 export class NotificationDataService {

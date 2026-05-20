@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ResponseError } from '@sendgrid/helpers/classes';
-import { LoggerService } from 'src/app/common/logger/logger';
 import { NotificationPayload } from 'src/bll/interfaces/notification-provider.interface';
 import { MailService } from '@sendgrid/mail';
 
@@ -11,28 +10,23 @@ export class SendGridService {
 
   constructor(
     private readonly configService: ConfigService,
-    private readonly logger: LoggerService,
   ) {
     this.client = new MailService();
     this.client.setApiKey(this.configService.get<string>('SENDGRID_API_KEY'));
   }
 
-  async sendMessage(payload: NotificationPayload) {
+  async sendEmail(payload: NotificationPayload) {
     try {
-      const message = payload.templateId
-        ? {
-            to: payload.to,
-            from: this.configService.get<string>('SENDGRID_FROM_EMAIL'),
-            templateId: payload.templateId,
-            dynamicTemplateData: payload.templateData ?? {},
-          }
-        : {
-            to: payload.to,
-            from: this.configService.get<string>('SENDGRID_FROM_EMAIL'),
-            subject: payload.subject ?? '(no subject)',
-            html: payload.body,
-          };
-
+      const message = {
+        to: {
+          email: payload.to,
+        },
+        from: {
+          email: this.configService.get<string>('SENDGRID_FROM_EMAIL'),
+        },
+        templateId: payload.templateId,
+        dynamicTemplateData: payload.templateData,
+      };
       const [response] = await this.client.send(message);
       const providerMsgId = response.headers['x-message-id'];
 
@@ -41,14 +35,8 @@ export class SendGridService {
         providerMsgId,
       };
     } catch (error) {
-      const statusCode = error instanceof ResponseError ? error.code : undefined;
       const message = this.extractErrorMessage(error);
-      this.logger.error(`SendGridProvider.sendMessage failed: ${message}`);
-      return {
-        success: false,
-        error: message,
-        statusCode,
-      };
+      throw new Error(message);
     }
   }
 

@@ -1,7 +1,12 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEmail, IsOptional } from 'class-validator';
+import { IsEmail, IsEnum, IsOptional } from 'class-validator';
+import { NotificationChannel } from 'src/lib/enum';
 
-export class SendEmailDto {
+export class SendNotificationDto {
+  @ApiProperty({ example: NotificationChannel.EMAIL })
+  @IsEnum(NotificationChannel)
+  channel: NotificationChannel;
+
   @ApiProperty({ example: 'user@example.com' })
   @IsEmail()
   to: string;
@@ -16,15 +21,13 @@ export class SendEmailDto {
   body?: string;
 
   @ApiPropertyOptional({
-    example: 'd-7c3d8b2f8e9a4f1b2c3d4e5f6a7b8c9d',
-    description:
-      'SendGrid dynamic template ID from your SendGrid dashboard (not the Swagger placeholder)',
+    description: 'SendGrid dynamic template ID from your SendGrid dashboard',
   })
   @IsOptional()
   templateId?: string;
 
   @ApiPropertyOptional({
-    example: { name: 'Jane', orderId: '12345' },
+    example: { title: 'Title of your notification', message: 'Message of your notification' },
     description: 'Dynamic template substitution data',
   })
   @IsOptional()
