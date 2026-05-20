@@ -41,10 +41,13 @@ export enum ErrorMessageType {
 
 export enum NotificationChannel {
   EMAIL = 'email',
+  SMS = 'sms',
+  WHATSAPP = 'whatsapp',
 }
 
 export enum NotificationProviderType {
   SENDGRID = 'sendgrid',
+  TWILIO = 'twilio',
 }
 
 export enum NotificationStatus {
@@ -56,4 +59,6 @@ export enum NotificationStatus {
 
 export enum BullQueueName {
   EMAIL = 'email-queue',
+  SMS = 'sms-queue',
+  WHATSAPP = 'whatsapp-queue',
 }

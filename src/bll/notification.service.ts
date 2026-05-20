@@ -13,16 +13,19 @@ export class NotificationService {
   ) {}
 
   async sendNotification(item: SendNotificationDto) {
-    let payload = {
+    const payload = {
       to: item.to,
       subject: item.subject,
       body: item.body,
       templateId: item.templateId,
       templateData: item.templateData,
+      contentSid: item.contentSid,
     };
 
     const providerMap: Partial<Record<NotificationChannel, NotificationProviderType>> = {
       [NotificationChannel.EMAIL]: NotificationProviderType.SENDGRID,
+      [NotificationChannel.SMS]: NotificationProviderType.TWILIO,
+      [NotificationChannel.WHATSAPP]: NotificationProviderType.TWILIO,
     };
 
     const log = await this.dataService.createLog({

@@ -8,6 +8,12 @@ import { BullQueueName } from 'src/lib/enum';
     BullModule.registerQueue({
       name: BullQueueName.EMAIL,
     }),
+    BullModule.registerQueue({
+      name: BullQueueName.SMS,
+    }),
+    BullModule.registerQueue({
+      name: BullQueueName.WHATSAPP,
+    }),
   ],
   exports: [BullModule],
 })
