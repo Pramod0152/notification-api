@@ -4,6 +4,5 @@ import { SendGridService } from '../sendgrid.service';
 
 @Module({
   providers: [EmailProcessor, SendGridService],
-  exports: [SendGridService],
 })
 export class WorkerModule {}

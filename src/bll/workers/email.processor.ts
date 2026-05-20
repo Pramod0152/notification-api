@@ -60,10 +60,6 @@ export class EmailProcessor extends WorkerHost {
       throw new Error('Notification log not found');
     }
 
-    if (!log) {
-      throw new Error('Notification log not found');
-    }
-
     await this.dataService.createLog({
       channel: log.channel,
       provider: log.provider,

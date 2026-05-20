@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { BullQueueName, NotificationChannel, NotificationProviderType, NotificationStatus } from 'src/lib/enum';
+import { NotificationChannel, NotificationProviderType, NotificationStatus } from 'src/lib/enum';
 import { NotificationDataService } from '../dal/notification.data.service';
-import { InjectQueue } from '@nestjs/bullmq';
-import { Queue } from 'bullmq';
 import { SendNotificationDto } from 'src/dto/email/send-notification.dto';
 import { ChannelRegistry } from './channel-handler/channel.registry';
+import { PaginationDto } from 'src/dto/pagination.dto';
 
 @Injectable()
 export class NotificationService {
@@ -43,8 +42,8 @@ export class NotificationService {
     };
   }
 
-  async getLogs() {
-    return this.dataService.getLogs();
+  async getLogs(query: PaginationDto) {
+    return this.dataService.getLogs(query);
   }
 
   async getLog(id: number) {

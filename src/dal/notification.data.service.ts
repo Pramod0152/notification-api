@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { NotificationLog } from './entities/notification.entity';
 import { CreateNotificationLog } from 'src/bll/interfaces/notification-log.interface';
+import { PaginationDto } from 'src/dto/pagination.dto';
 
 @Injectable()
 export class NotificationDataService {
@@ -33,11 +34,12 @@ export class NotificationDataService {
           required: false,
         },
       ],
-      order: [['created_at', 'DESC']],
     });
   }
 
-  async getLogs() {
+  async getLogs(query: PaginationDto) {
+    const { limit = 10, offset = 0 } = query;
+
     return this.model.findAll({
       where: {
         parent_id: null,
@@ -50,6 +52,8 @@ export class NotificationDataService {
         },
       ],
       order: [['created_at', 'DESC']],
+      limit: +limit,
+      offset: +offset,
     });
   }
 }

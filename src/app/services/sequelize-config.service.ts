@@ -20,30 +20,6 @@ export class SequelizeConfigService implements SequelizeOptionsFactory {
 
     const isSslEnabled = DATABASE_SSL === 'true' || DATABASE_SSL === '1';
 
-    console.log({
-      dialect: 'postgres',
-      host: DATABASE_HOST,
-      port: DATABASE_PORT,
-      username: DATABASE_USER,
-      password: DATABASE_PASSWORD,
-      database: DATABASE_NAME,
-      dialectOptions: isSslEnabled
-        ? {
-            ssl: {
-              require: true,
-              rejectUnauthorized: false,
-            },
-          }
-        : undefined,
-      autoLoadModels: true,
-      logging: false,
-      /** Never make it true it will crate tables according to the models */
-      synchronize: false,
-      define: {
-        timestamps: false,
-      },
-    });
-
     return {
       dialect: 'postgres',
       host: DATABASE_HOST,
