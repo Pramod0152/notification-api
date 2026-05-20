@@ -8,7 +8,6 @@ export class SendNotificationDto {
   channel: NotificationChannel;
 
   @ApiProperty({ example: 'user@example.com' })
-  @IsEmail()
   to: string;
 
   @ApiPropertyOptional({ example: 'Welcome' })

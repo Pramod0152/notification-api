@@ -55,6 +55,7 @@ export enum NotificationStatus {
   FAILED = 'failed',
   BOUNCED = 'bounced',
   READ = 'read',
+  WAITING = 'waiting',
 }
 
 export enum BullQueueName {

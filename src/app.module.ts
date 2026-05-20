@@ -11,7 +11,6 @@ import { DalModule } from './dal/dal.module';
 import { ServiceModule } from './bll/service.module';
 import { FrontendModule } from './modules/frontend.module';
 import { BullQueueModule } from './modules/bull-queue-module';
-import { EmailProcessor } from './bll/workers/email.processor';
 import { WorkerModule } from './bll/workers/worker.module';
 
 @Module({
@@ -49,7 +48,6 @@ import { WorkerModule } from './bll/workers/worker.module';
       provide: APP_FILTER,
       useClass: ExceptionsFilterService,
     },
-    EmailProcessor,
   ],
 })
 export class AppModule {}

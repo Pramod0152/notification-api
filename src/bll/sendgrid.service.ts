@@ -8,25 +8,27 @@ import { MailService } from '@sendgrid/mail';
 export class SendGridService {
   private client: MailService;
 
-  constructor(
-    private readonly configService: ConfigService,
-  ) {
+  constructor(private readonly configService: ConfigService) {
     this.client = new MailService();
     this.client.setApiKey(this.configService.get<string>('SENDGRID_API_KEY'));
   }
 
   async sendEmail(payload: NotificationPayload) {
     try {
-      const message = {
-        to: {
-          email: payload.to,
-        },
-        from: {
-          email: this.configService.get<string>('SENDGRID_FROM_EMAIL'),
-        },
-        templateId: payload.templateId,
-        dynamicTemplateData: payload.templateData,
-      };
+      const message = payload.templateId
+        ? {
+            to: { email: payload.to },
+            from: { email: this.configService.get<string>('SENDGRID_FROM_EMAIL') },
+            templateId: payload.templateId,
+            dynamicTemplateData: payload.templateData,
+          }
+        : {
+            to: { email: payload.to },
+            from: { email: this.configService.get<string>('SENDGRID_FROM_EMAIL') },
+            subject: payload.subject,
+            html: payload.body,
+          };
+
       const [response] = await this.client.send(message);
       const providerMsgId = response.headers['x-message-id'];
 

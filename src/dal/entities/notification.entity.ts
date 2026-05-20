@@ -1,4 +1,4 @@
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
+import { BelongsTo, Column, DataType, ForeignKey, HasMany, Model, Table } from 'sequelize-typescript';
 
 @Table({
   tableName: 'notification_logs',
@@ -15,6 +15,10 @@ export class NotificationLog extends Model {
   id: number;
 
   @Column
+  @ForeignKey(() => NotificationLog)
+  parent_id?: number | null;
+
+  @Column
   channel: string;
 
   @Column
@@ -29,15 +33,24 @@ export class NotificationLog extends Model {
   })
   payload: any;
 
-  @Column({ field: 'provider_msg_id' })
-  providerMsgId?: string;
+  @Column
+  provider_msg_id?: string;
 
   @Column
   attempts: number;
 
-  @Column({ field: 'last_error' })
-  lastError?: string;
+  @Column
+  last_error?: string;
 
-  @Column({ field: 'queued_at' })
-  queuedAt?: Date;
+  @Column
+  queued_at?: Date;
+
+  @Column
+  created_at: Date;
+
+  @Column
+  updated_at: Date;
+
+  @HasMany(() => NotificationLog, { foreignKey: 'parent_id', as: 'child_logs' })
+  child_logs: NotificationLog[];
 }

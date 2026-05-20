@@ -11,6 +11,17 @@ module.exports = {
         primaryKey: true,
       },
 
+      parent_id: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'notification_logs',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
+      },
+
       channel: {
         type: Sequelize.STRING,
         allowNull: false,

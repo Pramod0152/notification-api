@@ -1,17 +1,13 @@
 import { NotificationStatus } from 'src/lib/enum';
 
-export interface CreateNotificationLogInput {
+export interface CreateNotificationLog {
   channel: string;
   provider: string;
   status: NotificationStatus;
   payload: any;
   attempts?: number;
-  queuedAt?: Date;
-}
-
-export interface UpdateNotificationLogInput {
-  status?: NotificationStatus;
-  providerMsgId?: string;
-  lastError?: string;
-  attempts?: number;
+  queued_at?: Date;
+  parent_id?: number | null;
+  provider_msg_id?: string | null;
+  last_error?: string | null;
 }
