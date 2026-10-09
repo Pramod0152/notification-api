@@ -17,8 +17,8 @@ export class NotificationController {
   @Post('')
   @ApiResponse({ type: GenericResponseDto })
   async sendNotification(@Body() item: SendNotificationDto) {
-    const message = await this.notificationService.sendNotification(item);
-    return this.responseHandler.HandleResponse(message);
+    const { message } = await this.notificationService.sendNotification(item);
+    return this.responseHandler.HandleResponse({}, message);
   }
 
   @Get('')
